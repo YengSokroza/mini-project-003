@@ -1,0 +1,27 @@
+.container {
+	@apply h-screen grid place-content-center  bg-green-100 ;
+}
+
+.title {
+	@apply text-lg font-semibold text-slate-500  text-center  ;
+}
+
+.label {
+	@apply block mb-2 text-sm font-medium text-slate-600 dark:text-white;
+}
+
+.input {
+	@apply bg-gray-50 border border-gray-300 text-slate-600 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 ;
+}
+
+.form {
+	@apply max-w-sm mx-auto;
+}
+
+.error {
+    @apply text-red-500 text-sm mt-1;
+}
+
+.button {
+    @apply text-black-10 w-full bg-yellow-10 hover:bg-yellow-200 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm  px-5 py-2.5 text-center
+}

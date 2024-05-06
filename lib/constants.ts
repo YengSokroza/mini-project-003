@@ -1,0 +1,3 @@
+export const BASE_URL = "https://store.istad.co"
+
+export const ACCESS_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzE0OTMzMTk4LCJpYXQiOjE3MTQ5MzI4MzgsImp0aSI6IjU4Y2Y0NzE2ZmFjOTQzNGM4NWRhZDFhYjUwMWU1MDRiIiwidXNlcl9pZCI6MX0.u8fLsutdqXhcwGNlXwVcFSxNMb1JIH1sy0QhoUOCbFk"
