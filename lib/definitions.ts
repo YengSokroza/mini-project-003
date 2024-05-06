@@ -1,12 +1,14 @@
 export type ProductType = {
-	id: number,
-	name:string,
-	price:number,
-	category:string,
-	desc:string,
-	image:string
-}
-
+	category: {
+	  name: string;
+	  icon: string;
+	};
+	name: string;
+	price: number;
+	quantity: number;
+	desc: string;
+	image: string;
+  };
 
 export type CartProductType = {
 	name: string;
@@ -28,3 +30,16 @@ export type ImageType = {
 	onClick?: () => void;
 }
 
+export type ModalType = {
+	isOpen: boolean;
+	onClose: () => void;
+	onOpenChange: () => void;
+  };
+
+
+  export type ModalTypeWithId = {
+	isOpen: boolean;
+	onClose: () => void;
+	onOpenChange: () => void;
+	id: number;
+  };

@@ -36,9 +36,7 @@ export default function page() {
 
 	}, [products]);
 
-	const totalPriceEachItem = () => {
-
-	}
+	
 
 	return (
 

@@ -1,7 +1,7 @@
 "use client"
 import React from "react";
 import { Button, Card, CardBody, CardFooter, Image } from "@nextui-org/react";
-import { CartIcon } from "../icons/FontAwesome";
+import { CartIcon } from "../icons/iconsCustomize";
 import { useRouter } from "next/navigation";
 import { LuShoppingCart } from "react-icons/lu";
 import { ProductType , CartProductType } from "@/lib/definitions";
@@ -17,6 +17,7 @@ export default function CardProductComponent(
     image,
     price,
     quantity,
+    onClick
 
   }: CartProductType
 ) {
@@ -41,7 +42,7 @@ export default function CardProductComponent(
   return (
     <>
       {/* Click on */}
-      <Card shadow="sm" isPressable onClick={handleCardClick} >
+      <Card shadow="sm" isPressable onClick={onClick} >
         <CardBody className="overflow-visible p-0 relative">
 
           {/* add to cart button */}

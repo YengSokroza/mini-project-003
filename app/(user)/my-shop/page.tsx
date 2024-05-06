@@ -1,7 +1,7 @@
 'use client'
 
 import { CartProductType } from '@/lib/definitions';
-import { Input, Modal, ModalBody, ModalHeader, Pagination, PaginationItemType } from '@nextui-org/react'
+import { Input, Modal, ModalBody, ModalHeader, Pagination, PaginationItemType, useDisclosure } from '@nextui-org/react'
 import React, { useEffect, useState } from 'react'
 import { LuSearch } from "react-icons/lu";
 import DataTable, { TableColumn } from "react-data-table-component";
@@ -10,19 +10,28 @@ import Image from 'next/image';
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
 import { LuMoreHorizontal } from "react-icons/lu";
 import { cn } from '@/app/utils/cn';
-import { ChevronIcon } from "@/components/icons/FontAwesome";
+import { ChevronIcon } from "@/components/icons/iconsCustomize";
 import { useRouter } from 'next/navigation';
+import DeleteModalComponent from '@/components/modal/DeleteModal';
+import CreateModalComponent from '@/components/modal/CreateModal';
+import UpdateModalComponent from '@/components/modal/UpdateModal';
 
 
 
 export default function page() {
   const [products, setProducts] = useState<CartProductType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [openModal, setOpenModal] = useState(false);
-  const [productDetail, setProductDetail] = useState<CartProductType | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter();
-
+  const DeleteModal = useDisclosure();
+  const EditModal = useDisclosure();
+  const CreateModal = useDisclosure();
+  const [id, setId] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
+  const handleEditClick = (id: number, modal: any) => {
+    setId(id);
+    setIsOpen(modal);
+  };
 
   const [currentPage, setCurrentPage] = useState(1);
   const { data, error, isLoading } = useGetMyProductsQuery({
@@ -35,14 +44,10 @@ export default function page() {
   useEffect(() => {
     if (data && !isLoading) {
       console.log(data);
-
-
       setProducts(data);
     }
   }, [data]);
 
-  console.log("data of product: ", products);
-  console.log("data length: ", products.length);
 
   // pagination controls
   const totalPage = Math.ceil(products.length / 2);
@@ -104,11 +109,6 @@ export default function page() {
     product.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  //handle view product
-  const handleViewProduct = (product: CartProductType) => {
-    setProductDetail(product);
-    setOpenModal(true);
-  };
 
   const columns: TableColumn<CartProductType>[] = [
     {
@@ -155,9 +155,11 @@ export default function page() {
           <DropdownMenu
             aria-label="Action event example"
           >
-            <DropdownItem key="new">View</DropdownItem>
-            <DropdownItem key="edit">Edit</DropdownItem>
-            <DropdownItem key="delete" className="text-danger" color="danger">
+            <DropdownItem key="new" >View</DropdownItem>
+            <DropdownItem key="edit" onPress={() => handleEditClick(row.id , EditModal.onOpen)} >Edit</DropdownItem>
+            <DropdownItem key="delete" onPress={() =>
+              handleEditClick(row.id, DeleteModal.onOpen)
+            } className="text-danger" color="danger">
               Delete
             </DropdownItem>
           </DropdownMenu>
@@ -178,10 +180,10 @@ export default function page() {
             radius="lg"
             placeholder="Type to search..."
             startContent={
-              <LuSearch  className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
+              <LuSearch className="text-black/50 mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
             }
           />
-          <Button onClick={() => router.push("/my-shop/create-product")} className='bg-yellow-10 font-semibold'>
+          <Button onPress={CreateModal.onOpen} className='bg-yellow-10 font-semibold'>
             Create New
           </Button>
         </div>
@@ -195,6 +197,23 @@ export default function page() {
             customStyles={customStyles}
           />
 
+          <DeleteModalComponent
+            isOpen={DeleteModal.isOpen}
+            id={id}
+            onOpenChange={DeleteModal.onOpenChange}
+            onClose={DeleteModal.onClose}
+          />
+          <CreateModalComponent
+            isOpen={CreateModal.isOpen}
+            onOpenChange={CreateModal.onOpenChange}
+            onClose={CreateModal.onClose}
+          />
+          <UpdateModalComponent
+            isOpen={EditModal.isOpen}
+            onClose={EditModal.onClose}
+            onOpenChange={EditModal.onOpenChange}
+            id={id}
+          />
 
         </div>
 
@@ -209,7 +228,7 @@ export default function page() {
             radius="full"
             renderItem={renderItem}
             variant="light"
-            
+
           />
         </div>
 

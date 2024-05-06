@@ -8,7 +8,7 @@ import logo from "@/public/hupe.svg"
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { MenuList } from "./menu";
-import { CartIcon } from "@/components/icons/FontAwesome"
+import { CartIcon } from "@/components/icons/iconsCustomize"
 import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 
@@ -77,10 +77,20 @@ export default function NavbarComponent() {
   const token = useAppSelector(selectToken);
   console.log("token: ", token);
 
-
-
-  // const userProfile = useAppSelector((state) => state.userProfile)
-  // console.log(userProfile);
+  const handleLogout = async () => {
+		fetch(process.env.NEXT_PUBLIC_API_URL + "/logout", {
+			method: "POST",
+			credentials: "include",
+			body: JSON.stringify({}),
+		})
+			.then((res) => res.json())
+			.then((data) => {
+				console.log("Data from logout : ", data);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	};
 
   if (!session) {
     return (
@@ -223,7 +233,7 @@ export default function NavbarComponent() {
               <p className="font-semibold">{session.user?.email}</p>
             </DropdownItem>
 
-            <DropdownItem key="logout" color="danger" onClick={() => signOut()}>
+            <DropdownItem key="logout" color="danger" onClick={() => {signOut() , handleLogout}}>
               Log Out
             </DropdownItem>
           </DropdownMenu>

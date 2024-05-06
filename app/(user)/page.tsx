@@ -3,12 +3,12 @@
 import CardProductComponent from "@/components/card/CardProductComponent";
 import { useGetProductsQuery } from "@/redux/service/product";
 import { useEffect, useState } from "react";
-import { ProductType } from "@/lib/definitions";
+import { CartProductType, ProductType } from "@/lib/definitions";
 import { log } from "console";
 import { Pagination, PaginationItemType } from "@nextui-org/react";
 import { cn } from "../utils/cn";
 import { LuChevronRightCircle, LuChevronLeftCircle } from "react-icons/lu";
-import { ChevronIcon } from "@/components/icons/FontAwesome";
+import { ChevronIcon } from "@/components/icons/iconsCustomize"
 import { ToastContainer, toast } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -16,12 +16,15 @@ import { useAppSelector } from "@/redux/hooks";
 import { selectToken } from "@/redux/features/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { fetchUserProfile } from "@/redux/features/userProfile/userProfileSlice";
+import { useRouter } from "next/navigation";
 
 
 export default function Home() {
 
   // const [products, setProducts] = useState([]);
   const dispatch = useDispatch()
+
+  const router = useRouter();
 
   const state = useAppSelector((state) => state.auth.token);
   console.log("Global State: ", state);
@@ -118,8 +121,8 @@ export default function Home() {
         {/* populate all products */}
         <div className="gap-2 grid grid-cols-2 sm:grid-cols-4 ">
 
-          {data && data.results && data.results.map((item: ProductType, index: any) => (
-            <CardProductComponent key={index} name={item.name} id={item.id} price={item.price} image={item.image}  ></CardProductComponent>
+          {data && data.results && data.results.map((item: CartProductType, index: any) => (
+            <CardProductComponent key={index} name={item.name} id={item.id} price={item.price} image={item.image} onClick={() => router.push(`/product/${item.id}`)} ></CardProductComponent>
           ))}
 
         </div>
